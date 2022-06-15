@@ -1,6 +1,6 @@
 validate = require("./validators/parameterValidator");
 inputFile = require("./inputFile");
-outputFile = require("./outpuFile");
+output = require("./outpuFile");
 createFile = require("./createFile");
 const fs = require('fs');
 const readline = require('readline');
@@ -9,8 +9,8 @@ async function processLineByLine(inputFileName, outputFileName) {
   const fileStream = fs.createReadStream(inputFileName);
 
 
-  var J = 11, Q = 12, K = 13, A = 1;
-  var S = 4, H = 3,D = 2, C = 1;
+  let J = 11, Q = 12, K = 13, A = 1;
+  let S = 4, H = 3,D = 2, C = 1;
 
   const rl = readline.createInterface({
     input: fileStream,
@@ -18,16 +18,15 @@ async function processLineByLine(inputFileName, outputFileName) {
   });
   // Note: we use the crlfDelay option to recognize all instances of CR LF
   // ('\r\n') in input.txt as a single line break.
-  var max = 0;
-  const allTotal = []
-  const allCards = []
+  let allTotal = []
+  let allCards = []
   for await (const line of rl) {
-    var counter = 0;
-    var all = line.split(":"); 
-    var cards = all[1].split(",");
+    let counter = 0;
+    let all = line.split(":"); 
+    let cards = all[1].split(",");
     allCards.push(cards);
     for(const card of cards){
-        var cardValue = card[0];
+        let cardValue = card[0];
         
         //console.log(cardValue);
         if (!isNaN(cardValue)) {
@@ -60,12 +59,12 @@ async function processLineByLine(inputFileName, outputFileName) {
   console.log('totals: ' + allTotal)
 
   //loop array and get the biggest
-  var highest = 0;
-  const winners = [];
-  const winnerRows = [];
-  var isFirst = true;
+  let highest = 0;
+  let winners = [];
+  let winnerRows = [];
+  let isFirst = true;
   for(let i=0;i<allTotal.length;i++){
-    var current = parseInt(allTotal[i].split(':')[1]);
+    let current = parseInt(allTotal[i].split(':')[1]);
 
     if(current >= highest){
         
@@ -103,22 +102,22 @@ async function processLineByLine(inputFileName, outputFileName) {
 
     if(winners.length > 1)
     {
-        var names = [];
+        let names = [];
         for(let i=0;i<winners.length;i++){
             names.push(winners[i].split(':')[0])
         }
         console.log(names.toString() + ':' + winners[0].split(':')[1])
-        var tieMax = 0;
+        let tieMax = 0;
         for (i = 0; i < winnerRows.length; i++) {
-            var r = winnerRows[i];
+            let r = winnerRows[i];
             console.log('winning rows ' + r)
 
-                var c =  allCards[r];//.split(',')[1];
+                let c =  allCards[r];//.split(',')[1];
                 //console.log(c);
-                var tieCount = 0
-                for(var a in c)
+                let tieCount = 0
+                for(let a in c)
                 {
-                    var val = c[a][1];
+                    let val = c[a][1];
 
                     if(val == 0)
                         val = c[a][2];
@@ -154,10 +153,10 @@ async function processLineByLine(inputFileName, outputFileName) {
     }
     
 }
-var parameterValidation = validate.validateParameters();
+let parameterValidation = validate.validateParameters();
 if(parameterValidation.length === 0){
-    var fileName = inputFile.getInputFileName();
-    var outputFile = outputFile.getoutputFileName();
+    let fileName = inputFile.getInputFileName();
+    let outputFile = output.getoutputFileName();
     processLineByLine(fileName, outputFile);
 }else{
     console.log(parameterValidation);

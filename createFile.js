@@ -1,6 +1,6 @@
 function createOutputFile(fileName, content) {
 
-    var fs = require('fs');
+    let fs = require('fs');
  
     // writeFile function with filename, content and callback function
     fs.writeFile(fileName, content, function (err) {
