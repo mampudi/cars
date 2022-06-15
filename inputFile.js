@@ -1,12 +1,10 @@
-
 function getInputFileName() {
+  const args = process.argv.slice(2);
+  let fileName = args[1].toString();
+  return fileName;
 
-    const args = process.argv.slice(2);
-    let fileName = args[1].toString();
-    return fileName;
-    
-    }
-    
-    module.exports = {
-        getInputFileName
-      };
+}
+
+module.exports = {
+  getInputFileName
+};
