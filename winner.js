@@ -1,10 +1,13 @@
+const { GetBiggestCardCount } = require("./GetBiggestCardCount");
+const { OneWinner } = require("./OneWinner");
+const { TieBreaker } = require("./TieBreaker");
+
 validate = require("./validators/parameterValidator");
 inputFile = require("./inputFile");
 output = require("./outpuFile");
 cardCounter = require("./cardCounter")
 
-const fs = require('fs');
-const readline = require('readline');
+
 const J = 11,
   Q = 12,
   K = 13,
@@ -17,18 +20,28 @@ let allTotal = [],
   allCards = []
 
 async function ProcessFile(inputFileName, outputFileName) {
-  await cardCounter.GetAllCardTotals(allCards, J, A, Q, K, allTotal, inputFileName);
-  //loop array and get the biggest
-  let {
-    winners,
-    winnerRows
-  } = await GetBiggestCardCount(allTotal);
 
-  await OneWinner(winners, allTotal, outputFileName);
 
-  await TieBreaker(winners, winnerRows, allCards, S, H, D, C, outputFileName);
+
+  let cardvalidation  = await cardCounter.GetAllCardTotals(allCards, J, A, Q, K, allTotal, inputFileName);
+  if(cardvalidation.length == 0){
+    //loop array and get the biggest
+    let {
+      winners,
+      winnerRows
+    } = await GetBiggestCardCount(allTotal);
+
+    await OneWinner(winners, allTotal, outputFileName);
+
+    await TieBreaker(winners, winnerRows, allCards, S, H, D, C, outputFileName);
+  }else{
+    const daytime = new Date();
+    output.createOutputFile('err.txt',daytime + ' -  ' + cardvalidation)
+    console.log(parameterValidation);
+  }
 
 }
+
 
 let parameterValidation = validate.validateParameters();
 if (parameterValidation.length === 0) {
@@ -36,106 +49,9 @@ if (parameterValidation.length === 0) {
   let outputFile = output.getoutputFileName();
   ProcessFile(fileName, outputFile);
 } else {
+  const daytime = new Date();
+  output.createOutputFile('err.txt',daytime + ' -  ' + parameterValidation)
   console.log(parameterValidation);
 }
 
-async function TieBreaker(winners, winnerRows, allCards, S, H, D, C, outputFileName) {
-  if (winners.length > 1) {
-    let names = [];
-    for (let i = 0; i < winners.length; i++) {
-      names.push(winners[i].split(':')[0]);
-    }
-    console.log(names.toString() + ':' + winners[0].split(':')[1]);
-    let tieMax = 0;
-    for (i = 0; i < winnerRows.length; i++) {
-      let r = winnerRows[i];
-      console.log('winning rows ' + r);
-
-      let c = allCards[r]; //.split(',')[1];
-
-      //console.log(c);
-      let tieCount = 0;
-      for (let a in c) {
-        let val = c[a][1];
-
-        if (val == 0)
-          val = c[a][2];
-
-        console.log(val);
-
-        switch (val) {
-          case 'S':
-            tieCount = tieCount + S;
-            break;
-          case 'H':
-            tieCount = tieCount + H;
-            break;
-          case 'D':
-            tieCount = tieCount + D;
-            break;
-          case 'C':
-            tieCount = tieCount + C;
-            break;
-        }
-
-
-      }
-      console.log('Suite score total ' + tieCount);
-
-      //console.log('row cards ' + c.toString().split(',')[1])
-    }
-    output.createOutputFile(outputFileName, names.toString() + ':' + winners[0].split(':')[1]);
-
-
-
-  }
-}
-
-async function OneWinner(winners, allTotal, outputFileName) {
-  //if second going forward didn't win then the winner is the first player
-  if (winners.length == 0) {
-    winners.push(allTotal[0]);
-  }
-
-  if (winners.length == 1) {
-    console.log(winners.toString());
-    output.createOutputFile(outputFileName, winners.toString());
-  }
-}
-
-async function GetBiggestCardCount(allTotal) {
-  let highest = 0;
-  let winners = [];
-  let winnerRows = [];
-  let isFirst = true;
-  for (let i = 0; i < allTotal.length; i++) {
-    let current = parseInt(allTotal[i].split(':')[1]);
-
-    if (current >= highest) {
-
-      if (!isFirst) {
-
-        //remove previous lower ones
-        if (current !== highest) {
-          winners.pop();
-          winnerRows.pop();
-        }
-
-
-        winners.push(allTotal[i]);
-        winnerRows.push(i);
-
-
-      }
-      highest = current;
-      isFirst = false;
-
-    }
-
-  }
-  return {
-    winners,
-    winnerRows
-  };
-}
 
