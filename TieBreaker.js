@@ -50,13 +50,13 @@ async function TieBreaker(winners, winnerRows, allCards, S, H, D, C, outputFileN
         if (!isFirst) {
           //remove previous lower ones
           if (tieCount !== highest) {
-            finalwinners.pop();
+            finalwinners = [];
 
           }
 
-          finalwinners.push(names[winnerRow]);
+          finalwinners.push(names[i]);
         }else{
-          finalwinners.push(names[winnerRow]);
+          finalwinners.push(names[i]);
         }
         highest = tieCount;
         isFirst = false;
@@ -64,7 +64,7 @@ async function TieBreaker(winners, winnerRows, allCards, S, H, D, C, outputFileN
 
       console.log('Suite score total ' + tieCount);
 
-      //console.log('row cards ' + c.toString().split(',')[1])
+
     }
     output.createOutputFile(outputFileName, finalwinners.toString() + ':' + winners[0].split(':')[1]);
 

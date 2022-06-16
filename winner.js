@@ -38,7 +38,8 @@ async function ProcessFile(inputFileName, outputFileName) {
       winnerRows
     } = await GetBiggestCardCount(allTotal);
 
-    await OneWinner(winners, allTotal, outputFileName);
+
+    await OneWinner(winners, outputFileName);
 
     //only do this for a tire breaker
     if (winners.length > 1) {

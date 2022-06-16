@@ -7,15 +7,16 @@ async function GetBiggestCardCount(allTotal) {
   
   for (let i = 0; i < allTotal.length; i++) {
     let current = parseInt(allTotal[i].split(':')[1]);
-
+    
     if (current >= highest) {
 
       if (!isFirst) {
 
         //remove previous lower ones
         if (current !== highest) {
-          winners.pop();
-          winnerRows.pop();
+          console.log('kgang')
+          winners = [];
+          winnerRows= [];
         }
 
 
