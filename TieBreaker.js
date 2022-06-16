@@ -5,26 +5,30 @@ async function TieBreaker(winners, winnerRows, allCards, S, H, D, C, outputFileN
     for (let i = 0; i < winners.length; i++) {
       names.push(winners[i].split(':')[0]);
     }
-    console.log(names.toString() + ':' + winners[0].split(':')[1]);
     let tieMax = 0;
-    for (i = 0; i < winnerRows.length; i++) {
-      let r = winnerRows[i];
-      console.log('winning rows ' + r);
+    let highest = 0;
+    let finalwinners = [];
+    let isFirst = true;
 
-      let c = allCards[r]; //.split(',')[1];
+    for (i = 0; i < winnerRows.length; i++) {
+      let winnerRow = winnerRows[i];
+      console.log('winning rows ' + winnerRow);
+      console.log('Current player ' + names[winnerRow]);
+      
+
+      let winnerCards = allCards[winnerRow]; 
 
 
       //console.log(c);
       let tieCount = 0;
-      for (let a in c) {
-        let val = c[a][1];
+      for (let a in winnerCards) {
+        let cardSuite = winnerCards[a][1];
 
-        if (val == 0)
-          val = c[a][2];
+        if (cardSuite == 0)
+        cardSuite = winnerCards[a][2];
 
-        console.log(val);
 
-        switch (val) {
+        switch (cardSuite) {
           case 'S':
             tieCount = tieCount + S;
             break;
@@ -41,11 +45,28 @@ async function TieBreaker(winners, winnerRows, allCards, S, H, D, C, outputFileN
 
 
       }
+
+      if(tieCount >= highest){
+        if (!isFirst) {
+          //remove previous lower ones
+          if (tieCount !== highest) {
+            finalwinners.pop();
+
+          }
+
+          finalwinners.push(names[winnerRow]);
+        }else{
+          finalwinners.push(names[winnerRow]);
+        }
+        highest = tieCount;
+        isFirst = false;
+      }
+
       console.log('Suite score total ' + tieCount);
 
       //console.log('row cards ' + c.toString().split(',')[1])
     }
-    output.createOutputFile(outputFileName, names.toString() + ':' + winners[0].split(':')[1]);
+    output.createOutputFile(outputFileName, finalwinners.toString() + ':' + winners[0].split(':')[1]);
 
 
 

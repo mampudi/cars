@@ -1,6 +1,8 @@
 function getoutputFileName() {
     const args = process.argv.slice(2);
-    let fileName = args[3].toString();
+    const inputIndex = args.indexOf('--out');
+    //the output file next is what ever argument come after --out
+    let fileName = args[inputIndex+1].toString();
     return fileName;
 
 }

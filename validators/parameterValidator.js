@@ -6,11 +6,11 @@ function validateParameters() {
         return 'Please supply the correct parameters';
     }
 
-    if (args[0] !== '--in') {
+    if (!args.includes('--in')) {
         return 'Parameter --in is required'
     }
 
-    if (args[2] !== '--out') {
+    if (!args.includes('--out')) {
         return 'Parameter --out is required';
     }
 

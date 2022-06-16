@@ -1,6 +1,12 @@
-const { GetBiggestCardCount } = require("./GetBiggestCardCount");
-const { OneWinner } = require("./OneWinner");
-const { TieBreaker } = require("./TieBreaker");
+const {
+  GetBiggestCardCount
+} = require("./GetBiggestCardCount");
+const {
+  OneWinner
+} = require("./OneWinner");
+const {
+  TieBreaker
+} = require("./TieBreaker");
 
 validate = require("./validators/parameterValidator");
 inputFile = require("./inputFile");
@@ -23,8 +29,9 @@ async function ProcessFile(inputFileName, outputFileName) {
 
 
 
-  let cardvalidation  = await cardCounter.GetAllCardTotals(allCards, J, A, Q, K, allTotal, inputFileName);
-  if(cardvalidation.length == 0){
+  let cardvalidation = await cardCounter.GetAllCardTotals(allCards, J, A, Q, K, allTotal, inputFileName);
+
+  if (cardvalidation.length == 0) {
     //loop array and get the biggest
     let {
       winners,
@@ -33,11 +40,13 @@ async function ProcessFile(inputFileName, outputFileName) {
 
     await OneWinner(winners, allTotal, outputFileName);
 
-    await TieBreaker(winners, winnerRows, allCards, S, H, D, C, outputFileName);
-  }else{
-    const daytime = new Date();
-    output.createOutputFile('err.txt',daytime + ' -  ' + cardvalidation)
-    console.log(parameterValidation);
+    //only do this for a tire breaker
+    if (winners.length > 1) {
+      await TieBreaker(winners, winnerRows, allCards, S, H, D, C, outputFileName);
+    }
+  } else {
+    output.createOutputFile(outputFileName, cardvalidation)
+    console.log(cardvalidation);
   }
 
 }
@@ -50,8 +59,6 @@ if (parameterValidation.length === 0) {
   ProcessFile(fileName, outputFile);
 } else {
   const daytime = new Date();
-  output.createOutputFile('err.txt',daytime + ' -  ' + parameterValidation)
+  output.createOutputFile('err.txt', daytime + ' -  ' + parameterValidation)
   console.log(parameterValidation);
 }
-
-

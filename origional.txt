@@ -4,6 +4,9 @@ Name3:6S,8D,3D,JH,2D
 Name4:5H,3S,KH,AS,9D
 Name5:JS,3H,2H,2C,4D
 
+1: 1+3+8+2+11
+2: 13+12+10+4+1 = 40
+
 Name1:1H,1C,1C,1S,1D
 Name2:2D,2H,2C,2C,2C
 Name3:3S,3D,3D,3H,3D

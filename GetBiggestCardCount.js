@@ -4,6 +4,7 @@ async function GetBiggestCardCount(allTotal) {
   let winners = [];
   let winnerRows = [];
   let isFirst = true;
+  
   for (let i = 0; i < allTotal.length; i++) {
     let current = parseInt(allTotal[i].split(':')[1]);
 
@@ -22,6 +23,9 @@ async function GetBiggestCardCount(allTotal) {
         winnerRows.push(i);
 
 
+      }else{
+        winners.push(allTotal[i]);
+        winnerRows.push(i);
       }
       highest = current;
       isFirst = false;
