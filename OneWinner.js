@@ -1,4 +1,3 @@
-
 async function OneWinner(winners, outputFileName) {
 
   if (winners.length == 1) {

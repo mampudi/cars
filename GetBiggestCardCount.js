@@ -1,13 +1,13 @@
-
 async function GetBiggestCardCount(allTotal) {
   let highest = 0;
   let winners = [];
   let winnerRows = [];
   let isFirst = true;
-  
+
+  //get players with the highest card count and return
   for (let i = 0; i < allTotal.length; i++) {
     let current = parseInt(allTotal[i].split(':')[1]);
-    
+
     if (current >= highest) {
 
       if (!isFirst) {
@@ -16,15 +16,14 @@ async function GetBiggestCardCount(allTotal) {
         if (current !== highest) {
           console.log('kgang')
           winners = [];
-          winnerRows= [];
+          winnerRows = [];
         }
-
 
         winners.push(allTotal[i]);
         winnerRows.push(i);
 
 
-      }else{
+      } else {
         winners.push(allTotal[i]);
         winnerRows.push(i);
       }
